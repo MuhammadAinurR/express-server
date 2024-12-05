@@ -12,7 +12,7 @@ exports.login = async (username, password) => {
     if (!isPasswordValid) throw { name: "Unauthorized" };
 
     // Generate JWT
-    return signToken({ id: user.id, role: user.role });
+    return signToken({ id: user.id, username: user.username, role: user.role });
   } catch (err) {
     throw err;
   }
