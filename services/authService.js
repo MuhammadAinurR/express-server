@@ -1,24 +1,19 @@
-const jwt = require("jsonwebtoken");
 const { internalUser } = require("../models");
-const { comparePassword } = require("../utils/passwordUtils");
-
-const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret_key";
+const { signToken } = require("../utils/jwtUtils");
 
 exports.login = async (username, password) => {
-  // Find user by username
-  const user = await internalUser.findOne({ where: { username } });
-  if (!user) {
-    throw new Error("Invalid username or password");
-  }
+  try {
+    // Find user by username
+    const user = await internalUser.findOne({ where: { username } });
+    if (!user) throw { name: "Unauthorized" };
 
-  // Compare passwords
-  const isPasswordValid = await comparePassword(password, user.password);
-  if (!isPasswordValid) {
-    throw new Error("Invalid username or password");
-  }
+    // Use the model's validPassword method to compare passwords
+    const isPasswordValid = await user.validPassword(password);
+    if (!isPasswordValid) throw { name: "Unauthorized" };
 
-  // Generate JWT
-  return jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, {
-    expiresIn: "1h",
-  });
+    // Generate JWT
+    return signToken({ id: user.id, role: user.role });
+  } catch (err) {
+    throw err;
+  }
 };
