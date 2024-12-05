@@ -5,8 +5,7 @@ const errorHandler = require("./utils/errorHandler");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const authRoutes = require("./routes/auth");
-
+const routes = require("./routes");
 // Middleware
 app.use(cors());
 app.use(express.json());
@@ -16,7 +15,7 @@ app.get("/", (req, res) => {
   res.send("Hello world");
 });
 
-app.use("/auth", authRoutes);
+app.use("/api", routes);
 
 app.use(errorHandler);
 
