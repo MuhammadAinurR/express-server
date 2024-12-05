@@ -10,6 +10,10 @@ function errorHandler(err, req, res, next) {
     return res.status(401).json({ message: "Unauthorized" });
   }
 
+  if (err.name === "NotFound") {
+    return res.status(404).json({ message: "Not found" });
+  }
+
   // Default to 500 server error
   res.status(500).json({ message: "Internal server error" });
 }
