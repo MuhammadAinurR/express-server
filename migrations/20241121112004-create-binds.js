@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('binds', {
+    await queryInterface.createTable("binds", {
       id: {
+        type: Sequelize.UUID,
+        defaultValue: Sequelize.UUIDV4,
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
       },
       userId: {
         type: Sequelize.STRING,
@@ -21,15 +21,15 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'platforms',
-          key: 'id',
+          model: "platforms",
+          key: "id",
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
       },
       isBind: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
+        type: Sequelize.STRING,
+        defaultValue: "pending",
       },
       createdAt: {
         allowNull: false,
@@ -42,12 +42,12 @@ module.exports = {
     });
 
     // Add unique constraint to prevent duplicate bindings
-    await queryInterface.addIndex('binds', ['userId', 'platformId'], {
+    await queryInterface.addIndex("binds", ["userId", "platformId"], {
       unique: true,
     });
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('binds');
+    await queryInterface.dropTable("binds");
   },
 };
