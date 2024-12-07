@@ -66,4 +66,8 @@ jobs:
           script: |
             cd /var/www/api-staging-degenmax
             npm install --production
-            pm2 start ecosystem.config.js || pm2 restart api-staging-degenmax
+            if [ ! -f ecosystem.config.js ]; then
+              echo "ecosystem.config.js not found, deployment failed"
+              exit 1
+            fi
+            pm2 start ecosystem.config.js --env development || pm2 restart api-staging-degenmax
