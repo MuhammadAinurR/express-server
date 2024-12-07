@@ -12,3 +12,15 @@ exports.getReferralCodes = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.getReferralTree = async (req, res, next) => {
+  const { userId } = req.params;
+
+  try {
+    const tree = await referralCodeService.getReferralTree(userId);
+    res.json(tree);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+};
