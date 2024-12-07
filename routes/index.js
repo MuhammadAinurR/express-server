@@ -11,6 +11,7 @@ const referralCodeRoutes = require("./referralCode");
 const platformRoutes = require("./platform");
 
 // Public routes
+router.get("/", (req, res) => res.send("Server is up and running"));
 router.use("/auth", authRoutes);
 
 // Protected routes
