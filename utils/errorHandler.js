@@ -2,6 +2,18 @@ function errorHandler(err, req, res, next) {
   console.log("error", err);
   console.error(err.stack || err);
 
+  // Add Sequelize connection error handling
+  if (
+    err.name === "SequelizeConnectionRefusedError" ||
+    err.name === "SequelizeConnectionError" ||
+    err.name === "SequelizeConnectionTimedOutError"
+  ) {
+    return res.status(503).json({
+      message: "Database connection error, please try again later",
+      error: process.env.NODE_ENV === "development" ? err.message : undefined,
+    });
+  }
+
   if (err.name === "Validation") {
     return res.status(400).json({ message: "Invalid input" });
   }
