@@ -21,7 +21,7 @@ class ReferralCodeService {
     };
   }
 
-  async getReferralTree(userId) {
+  async getReferralTree(userId, ancestorLevels = 1, descendantLevels = 1) {
     const currentUser = await ReferralCode.findOne({
       where: { userId },
       raw: true,
@@ -30,14 +30,14 @@ class ReferralCodeService {
     if (!currentUser) return null;
 
     // Build array of ancestors (including current user)
-    const buildAncestorChain = async (startUserId) => {
+    const buildAncestorChain = async (startUserId, levels) => {
       const chain = [];
       let current = await ReferralCode.findOne({
         where: { userId: startUserId },
         raw: true,
       });
 
-      while (current) {
+      while (current && levels > 0) {
         chain.unshift(current);
         if (!current.referredBy) break;
 
@@ -45,13 +45,15 @@ class ReferralCodeService {
           where: { userId: current.referredBy },
           raw: true,
         });
+        levels--;
       }
 
       return chain;
     };
 
     // Build descendant tree for a given user
-    const buildDescendantTree = async (userId) => {
+    const buildDescendantTree = async (userId, levels) => {
+      if (levels < 0) return null; // Stop if no levels left
       const user = await ReferralCode.findOne({
         where: { userId },
         raw: true,
@@ -65,7 +67,7 @@ class ReferralCodeService {
       return {
         userId: user.userId,
         referralCode: user.referralCode,
-        children: await Promise.all(children.map((child) => buildDescendantTree(child.userId))),
+        children: await Promise.all(children.map((child) => buildDescendantTree(child.userId, levels - 1))),
       };
     };
 
@@ -77,7 +79,7 @@ class ReferralCodeService {
 
       if (current.userId === userId) {
         // If this is the current user, include all their descendants
-        return await buildDescendantTree(userId);
+        return await buildDescendantTree(userId, descendantLevels);
       }
 
       return {
@@ -87,7 +89,7 @@ class ReferralCodeService {
       };
     };
 
-    const ancestorChain = await buildAncestorChain(userId);
+    const ancestorChain = await buildAncestorChain(userId, ancestorLevels);
     return buildRelevantTree(ancestorChain);
   }
 }
