@@ -37,7 +37,7 @@ class ReferralCodeService {
         raw: true,
       });
 
-      while (current && levels > 0) {
+      while (current && levels) {
         chain.unshift(current);
         if (!current.referredBy) break;
 
@@ -89,7 +89,7 @@ class ReferralCodeService {
       };
     };
 
-    const ancestorChain = await buildAncestorChain(userId, ancestorLevels + 1);
+    const ancestorChain = await buildAncestorChain(userId, Number(ancestorLevels) + 1);
     return buildRelevantTree(ancestorChain);
   }
 }
