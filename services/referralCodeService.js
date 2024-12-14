@@ -89,7 +89,7 @@ class ReferralCodeService {
       };
     };
 
-    const ancestorChain = await buildAncestorChain(userId, ancestorLevels);
+    const ancestorChain = await buildAncestorChain(userId, ancestorLevels + 1);
     return buildRelevantTree(ancestorChain);
   }
 }
