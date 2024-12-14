@@ -9,6 +9,7 @@ const eventRoutes = require("./event");
 const cashbackRoutes = require("./cashback");
 const referralCodeRoutes = require("./referralCode");
 const platformRoutes = require("./platform");
+const withdrawRoutes = require("./withdraw");
 const userTransactionRoutes = require("./userTransaction");
 const platformTransactionRoutes = require("./platformTransaction");
 
@@ -23,6 +24,7 @@ router.use("/events", eventRoutes);
 router.use("/cashback", cashbackRoutes);
 router.use("/referral-codes", referralCodeRoutes);
 router.use("/platforms", platformRoutes);
+router.use("/withdraw", withdrawRoutes);
 router.use("/user-transaction", userTransactionRoutes);
 router.use("/platform-transaction", platformTransactionRoutes);
 
