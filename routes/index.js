@@ -9,6 +9,8 @@ const eventRoutes = require("./event");
 const cashbackRoutes = require("./cashback");
 const referralCodeRoutes = require("./referralCode");
 const platformRoutes = require("./platform");
+const userTransactionRoutes = require("./userTransaction");
+const platformTransactionRoutes = require("./platformTransaction");
 
 // Public routes
 router.get("/", (req, res) => res.send("Server is up and running"));
@@ -21,5 +23,7 @@ router.use("/events", eventRoutes);
 router.use("/cashback", cashbackRoutes);
 router.use("/referral-codes", referralCodeRoutes);
 router.use("/platforms", platformRoutes);
+router.use("/user-transaction", userTransactionRoutes);
+router.use("/platform-transaction", platformTransactionRoutes);
 
 module.exports = router;

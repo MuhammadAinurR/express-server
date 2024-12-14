@@ -1,11 +1,10 @@
-'use strict';
-const { Model } = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class platformCashbacks extends Model {
     static associate(models) {
       platformCashbacks.belongsTo(models.platforms, {
-        foreignKey: 'platformId',
-        as: 'platform',
+        foreignKey: "platformId",
       });
     }
   }
@@ -27,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: 'platformCashbacks',
+      modelName: "platformCashbacks",
     }
   );
   return platformCashbacks;
