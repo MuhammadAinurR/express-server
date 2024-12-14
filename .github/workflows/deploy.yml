@@ -45,8 +45,8 @@ jobs:
             # Stop the existing process
             pm2 stop api-staging-degenmax || true
 
-            # Clean the directory
-            rm -rf /var/www/api-staging-degenmax/*
+            # Clean the directory but exclude ecosystem.config.js
+            find /var/www/api-staging-degenmax -mindepth 1 -not -name 'ecosystem.config.js' -delete
 
       - name: Copy files to VPS
         uses: appleboy/scp-action@master
