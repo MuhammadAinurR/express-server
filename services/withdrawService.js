@@ -4,7 +4,7 @@ const { Op } = require("sequelize"); // Import Sequelize operators
 exports.getWithdrawData = async (status, page = 1, limit = 10) => {
   // Build the where clause conditionally
   const whereClause = {
-    type: "WITHDRAW", // Always include this condition
+    // type: "EARN", // Always include this condition
     ...(status && { status }), // Add status condition if provided
   };
 
@@ -26,6 +26,7 @@ exports.getWithdrawData = async (status, page = 1, limit = 10) => {
       walletAddress: withdraw.walletAddress,
       createdAt: withdraw.createdAt,
       updatedAt: withdraw.updatedAt,
+      type: withdraw.type,
     })),
     totalPages: Math.ceil(count / limit),
   };
