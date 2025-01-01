@@ -15,7 +15,7 @@ exports.getWithdrawData = async (status, page = 1, limit = 10) => {
     offset,
   });
 
-  return {
+  return {  
     withdrawData: rows.map((withdraw) => ({
       id: withdraw.id,
       userId: withdraw.userId,
